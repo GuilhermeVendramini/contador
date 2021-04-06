@@ -42,17 +42,31 @@ class _MyPageState extends State<MyPage> {
         centerTitle: true,
       ),
       body: Center(
-        child: Text(
-          '$count',
-          style: TextStyle(
-            fontSize: 30.0,
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              '$count',
+              style: TextStyle(
+                fontSize: 30.0,
+              ),
+            ),
+            ElevatedButton(
+              child: Text('Add'),
+              onPressed: _counter,
+            ),
+            ElevatedButton(
+                child: Text('Less'),
+                onPressed: () {
+                  print('TODO');
+                }),
+          ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Text('Add'),
-        onPressed: _counter,
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Text('Add'),
+      //   onPressed: _counter,
+      // ),
     );
   }
 }
