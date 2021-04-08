@@ -12,6 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          centerTitle: true,
+        ),
+      ),
       home: MyPage(),
     );
   }
@@ -25,12 +30,27 @@ class MyPage extends StatefulWidget {
 }
 
 class _MyPageState extends State<MyPage> {
-  int count = 0;
+  int count = 0, max = 0, min = 0;
 
-  void _counter() {
+  void _refresh() {
     setState(() {
-      count++;
-      print(count);
+      count = 0;
+      max = 0;
+      min = 0;
+    });
+  }
+
+  void _incrementCounter({int value = 1}) {
+    setState(() {
+      count += value;
+      if (count > max) max = count;
+    });
+  }
+
+  void _decrementCounter({int value = 1}) {
+    setState(() {
+      count -= value;
+      if (count < min) min = count;
     });
   }
 
@@ -39,7 +59,6 @@ class _MyPageState extends State<MyPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Meu contador'),
-        centerTitle: true,
       ),
       body: Center(
         child: Column(
@@ -51,22 +70,102 @@ class _MyPageState extends State<MyPage> {
                 fontSize: 30.0,
               ),
             ),
-            ElevatedButton(
-              child: Text('Add'),
-              onPressed: _counter,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CircleAvatar(
+                  backgroundColor: Colors.blue,
+                  maxRadius: 30.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Max'),
+                      Text('$max'),
+                    ],
+                  ),
+                ),
+                CircleAvatar(
+                  backgroundColor: Colors.red,
+                  maxRadius: 30.0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Min'),
+                      Text('$min'),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            ElevatedButton(
-                child: Text('Less'),
-                onPressed: () {
-                  print('TODO');
-                }),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.white,
+                    ),
+                  ),
+                  child: Text(
+                    '+1',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  onPressed: _incrementCounter,
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.black,
+                    ),
+                  ),
+                  child: Text(
+                    '-1',
+                  ),
+                  onPressed: _decrementCounter,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.white,
+                    ),
+                  ),
+                  child: Text(
+                    '+2',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  onPressed: () {
+                    _incrementCounter(value: 2);
+                  },
+                ),
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      Colors.black,
+                    ),
+                  ),
+                  child: Text('-2'),
+                  onPressed: () {
+                    _decrementCounter(value: 2);
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Text('Add'),
-      //   onPressed: _counter,
-      // ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.refresh),
+        onPressed: _refresh,
+      ),
     );
   }
 }
